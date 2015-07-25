@@ -156,10 +156,10 @@ public class CalSqlAdapter {
                     jo.put("xVal", SQLObj.getxVal());
                     jo.put("yVal", SQLObj.getyVal());
                     jo.put("zVal", SQLObj.getzVal());
-                    jo.put("luxVal", SQLObj.getLuxVal());
-                    jo.put("proxVal", SQLObj.getProxVal());
-                    jo.put("isWalking", SQLObj.getIsWalking());
-                    jo.put("isTraining", SQLObj.getIsTraining());
+//                    jo.put("luxVal", SQLObj.getLuxVal());
+//                    jo.put("proxVal", SQLObj.getProxVal());
+//                    jo.put("isWalking", SQLObj.getIsWalking());
+//                    jo.put("isTraining", SQLObj.getIsTraining());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
