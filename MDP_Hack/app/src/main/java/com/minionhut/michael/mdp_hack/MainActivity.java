@@ -1,16 +1,46 @@
 package com.minionhut.michael.mdp_hack;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Vibrator;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.minionhut.michael.mdp_hack.CalSQL.CalSqlAdapter;
+
+import java.util.Timer;
+
 public class MainActivity extends ActionBarActivity {
+
+    private static CalSqlAdapter calSqlAdapter;
+    NthSense sensorService;
+    Timer T = new Timer();
+    Vibrator v;
+
+    public static CalSqlAdapter getAdapter() {
+        return calSqlAdapter;
+    }
+
+    public static  CalSqlAdapter setAdapter(CalSqlAdapter c) {
+        return calSqlAdapter = c;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // is this correct placement of setContentView
         setContentView(R.layout.activity_main);
+
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        Intent intent = new Intent(this, MainActivity.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     }
 
 
@@ -35,4 +65,24 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void onDestroy() {
+        unbindService(mConnection);
+        super.onDestroy();
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            NthSense.NthBinder binder = (NthSense.NthBinder) service;
+            sensorService = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+
 }
