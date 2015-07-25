@@ -54,6 +54,7 @@ public class CalSqlAdapter {
         contentValues.put(CalSqlHelper.ENTRY_LUXVAL, SQLObj.getLuxVal());
         contentValues.put(CalSqlHelper.ENTRY_ISWALKING, SQLObj.getIsWalking());
         contentValues.put(CalSqlHelper.ENTRY_ISTRAINING, SQLObj.getIsTraining());
+        contentValues.put(CalSqlHelper.ENTRY_DELTASTEPS, SQLObj.getDeltaSteps());
 
         long id = db.insert(CalSqlHelper.TABLE_NAME, null, contentValues);
         db.close();
@@ -92,8 +93,9 @@ public class CalSqlAdapter {
             int luxValCol = c.getColumnIndex(CalSqlHelper.ENTRY_LUXVAL);
             int isWalkingCol = c.getColumnIndex(CalSqlHelper.ENTRY_ISWALKING);
             int isTrainingCol = c.getColumnIndex(CalSqlHelper.ENTRY_ISTRAINING);
+            int deltaStepsCol = c.getColumnIndex(CalSqlHelper.ENTRY_DELTASTEPS);
             CalSQLObj so = new CalSQLObj(c.getFloat(xValCol),c.getFloat(yValCol),c.getFloat(zValCol),
-                    c.getFloat(proxValCol),c.getFloat(luxValCol),c.getInt(isWalkingCol),c.getInt(isTrainingCol),c.getLong(timestampCol));
+                    c.getFloat(proxValCol),c.getFloat(luxValCol),c.getInt(isWalkingCol),c.getInt(isTrainingCol),c.getFloat(deltaStepsCol),c.getLong(timestampCol));
             c.close();
             return so;
         }
@@ -121,9 +123,10 @@ public class CalSqlAdapter {
                     int luxValCol = c.getColumnIndex(CalSqlHelper.ENTRY_LUXVAL);
                     int isWalkingCol = c.getColumnIndex(CalSqlHelper.ENTRY_ISWALKING);
                     int isTrainingCol = c.getColumnIndex(CalSqlHelper.ENTRY_ISTRAINING);
+                    int deltaStepsCol = c.getColumnIndex(CalSqlHelper.ENTRY_DELTASTEPS);
 
                     CalSQLObj SQLObj = new CalSQLObj(c.getFloat(xValCol), c.getFloat(yValCol), c.getFloat(zValCol),
-                            c.getFloat(proxValCol), c.getFloat(luxValCol), c.getInt(isWalkingCol), c.getInt(isTrainingCol), c.getLong(timestampCol));
+                            c.getFloat(proxValCol), c.getFloat(luxValCol), c.getInt(isWalkingCol), c.getInt(isTrainingCol), c.getFloat(deltaStepsCol),c.getLong(timestampCol));
                     returnArray[arrayIndex] = SQLObj;
                 }
             }
@@ -136,9 +139,9 @@ public class CalSqlAdapter {
         String outputString = "";
         for (CalSQLObj SQLObj : CalSQLObjArray) {
             //TODO: While this data should be all numberical, it is best practice to have a function to parse data and escape special characters such as commas
-            //Output format: timeStamp, xVal, yVal, zVal, proxVal, luxVal, isWalking, isTraining
+            //Output format: timeStamp, xVal, yVal, zVal, proxVal, luxVal, isWalking, isTraining, deltaSteps
             outputString = outputString + SQLObj.getTimestamp() + ", " + SQLObj.getxVal() + ", " + SQLObj.getyVal() + ", " + SQLObj.getzVal() +
-                    ", " + SQLObj.getProxVal() + ", " + SQLObj.getLuxVal() + ", " + SQLObj.getIsWalking() + ", " + SQLObj.getIsTraining() + "/n";
+                    ", " + SQLObj.getProxVal() + ", " + SQLObj.getLuxVal() + ", " + SQLObj.getIsWalking() + ", " + SQLObj.getIsTraining() + ", " + SQLObj.getDeltaSteps() + "/n";
         }
         return outputString;
     }
@@ -147,7 +150,7 @@ public class CalSqlAdapter {
         JSONArray ja = new JSONArray();
         if (CalSQLObjArray != null) {
             for (CalSQLObj SQLObj : CalSQLObjArray) {
-                //Output format: email, timestamp, xVal, yVal, zVal, proxVal, luxVal, isWalking, isTraining
+                //Output format: email, timestamp, xVal, yVal, zVal, proxVal, luxVal, isWalking, isTraining, deltaSteps
 
                 JSONObject jo = new JSONObject();
                 try {
@@ -156,6 +159,7 @@ public class CalSqlAdapter {
                     jo.put("xVal", SQLObj.getxVal());
                     jo.put("yVal", SQLObj.getyVal());
                     jo.put("zVal", SQLObj.getzVal());
+                    jo.put("deltaSteps", SQLObj.getDeltaSteps());
 //                    jo.put("luxVal", SQLObj.getLuxVal());
 //                    jo.put("proxVal", SQLObj.getProxVal());
 //                    jo.put("isWalking", SQLObj.getIsWalking());
@@ -182,6 +186,7 @@ public class CalSqlAdapter {
         private static final String ENTRY_LUXVAL = "luxVal";
         private static final String ENTRY_ISWALKING = "isWalking";
         private static final String ENTRY_ISTRAINING = "isTraining";
+        private static final String ENTRY_DELTASTEPS = "deltaSteps";
 
         private static final String CREATE_TABLE = "CREATE TABLE "
                 + TABLE_NAME + " (" +
@@ -193,9 +198,10 @@ public class CalSqlAdapter {
                 ENTRY_LUXVAL + " REAL, " +
                 ENTRY_ISWALKING + " INTEGER, " +
                 ENTRY_ISTRAINING + " INTEGER " +
+                ENTRY_DELTASTEPS + " REAL " +
                 ");";
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 4;
 
         private Context context;
 
@@ -217,9 +223,11 @@ public class CalSqlAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
             try {
-                sqLiteDatabase.execSQL(DROP_TABLE);
-
-                onCreate(sqLiteDatabase);
+                //sqLiteDatabase.execSQL(DROP_TABLE);
+                //onCreate(sqLiteDatabase);
+                if (newVersion > oldVersion) {
+                    sqLiteDatabase.execSQL("ALTER TABLE NthSense ADD COLUMN deltaSteps REAL DEFAULT 0");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
