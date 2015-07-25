@@ -64,6 +64,7 @@ public class NthSense extends Service implements SensorEventListener {
 
         Intent intent = new Intent(this, dataService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        Log.d("NthSense", "On Create done");
     }
 
     @Override
@@ -89,7 +90,7 @@ public class NthSense extends Service implements SensorEventListener {
 
         int d_isWalking = (isWalking) ? 1 : 0;                                                      //converts boolean to 1 or 0 for storage in database
         int d_isTrainingData = (isTakingData) ? 1 : 0;
-
+        Log.d("NthSense", "" + x);
         long timestamp = System.currentTimeMillis();
         calSqlAdapter.insertData(new CalSQLObj(x,y,z,proximityVal,lux,d_isWalking,d_isTrainingData,timestamp)); //Insert data into local db
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -37,10 +38,12 @@ public class MainActivity extends ActionBarActivity {
         // is this correct placement of setContentView
         setContentView(R.layout.activity_main);
 
-        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        Intent intent = new Intent(this, MainActivity.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+//        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, NthSense.class);
 
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        Log.d("Main", "On Create Done");
     }
 
 

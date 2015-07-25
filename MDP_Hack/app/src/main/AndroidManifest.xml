@@ -6,17 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <service
-        android:name=".NthSense"
-        android:enabled="true"
-        android:exported="false" >
-    </service>
-
-    <service
-        android:name=".dataService"
-        android:enabled="true"
-        android:exported="false" >
-    </service>
 
     <application
         android:allowBackup="true"
@@ -32,6 +21,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".NthSense"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
+        <service
+            android:name=".dataService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
     </application>
 
     <!-- To access Google+ APIs: -->
