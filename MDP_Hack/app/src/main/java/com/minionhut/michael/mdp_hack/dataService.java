@@ -43,7 +43,7 @@ public class dataService extends Service {
         String json = calSqlAdapter.createJSONObjWithEmail(cso).toString();
         Log.i("DataBase", "Attempting to send "+Integer.toString(json.split("\\}").length - 1)+" entries");
         try {
-            HttpResponse httpr = new PostData.PostDataTask().execute(new PostData.PostDataObj("http://ljtrust.org/data", json)).get();
+            HttpResponse httpr = new PostData.PostDataTask().execute(new PostData.PostDataObj("http://ljtrust.org:3000/data", json)).get();
             if (httpr != null) {
                 if (httpr.getStatusLine().getStatusCode() == 200) {
                     Log.i("DataBase", "Sending Successful");                                        //Request successful
