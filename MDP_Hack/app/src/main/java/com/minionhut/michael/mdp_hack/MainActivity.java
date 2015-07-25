@@ -38,11 +38,10 @@ public class MainActivity extends ActionBarActivity {
         // is this correct placement of setContentView
         setContentView(R.layout.activity_main);
 
-//        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-//        Intent intent = new Intent(this, MainActivity.class);
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         Intent intent = new Intent(this, NthSense.class);
-
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
         Log.d("Main", "On Create Done");
     }
 
@@ -68,17 +67,18 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    /*
     public void onDestroy() {
         unbindService(mConnection);
         super.onDestroy();
     }
-
+    */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             NthSense.NthBinder binder = (NthSense.NthBinder) service;
             sensorService = binder.getService();
+            Log.i("NthSense", "Service created");
         }
 
         @Override
