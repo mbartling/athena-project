@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, NthSense.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
+        Log.d("Main", "On Create Done");
     }
 
 
