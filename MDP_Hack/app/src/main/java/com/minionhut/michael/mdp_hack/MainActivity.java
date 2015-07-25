@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -38,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, NthSense.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
     }
@@ -65,17 +66,18 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    /*
     public void onDestroy() {
         unbindService(mConnection);
         super.onDestroy();
     }
-
+    */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             NthSense.NthBinder binder = (NthSense.NthBinder) service;
             sensorService = binder.getService();
+            Log.i("NthSense", "Service created");
         }
 
         @Override
