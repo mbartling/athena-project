@@ -12,8 +12,9 @@ public class CalSQLObj {
     private float luxVal;
     private int isWalking;
     private int isTraining;
+    private float deltaSteps;
 
-    public CalSQLObj(float xVal, float yVal, float zVal, float proxVal, float luxVal, int isWalking, int isTraining, long timestamp) {
+    public CalSQLObj(float xVal, float yVal, float zVal, float proxVal, float luxVal, int isWalking, int isTraining, float deltaSteps, long timestamp) {
         this.setxVal(xVal);
         this.setyVal(yVal);
         this.setzVal(zVal);
@@ -22,9 +23,10 @@ public class CalSQLObj {
         this.setIsWalking(isWalking);
         this.setIsTraining(isTraining);
         this.setTimestamp(timestamp);
+        this.setDeltaSteps(deltaSteps);
     }
 
-    public CalSQLObj(float xVal, float yVal, float zVal, float proxVal, float luxVal, int isWalking, int isTraining) {
+    public CalSQLObj(float xVal, float yVal, float zVal, float proxVal, float luxVal, int isWalking, int isTraining, float deltaSteps) {
         this.xVal = xVal;
         this.yVal = yVal;
         this.zVal = zVal;
@@ -33,6 +35,7 @@ public class CalSQLObj {
         this.isWalking = isWalking;
         this.isTraining = isTraining;
         this.timestamp = System.currentTimeMillis();
+        this.deltaSteps = deltaSteps;
     }
 
     public long getTimestamp() {
@@ -97,5 +100,13 @@ public class CalSQLObj {
 
     public void setIsTraining(int isTraining) {
         this.isTraining = isTraining;
+    }
+
+    public float getDeltaSteps() {
+        return deltaSteps;
+    }
+
+    public void setDeltaSteps(float deltaSteps) {
+        this.deltaSteps = deltaSteps;
     }
 }
