@@ -20,6 +20,7 @@ public class NthSense extends Service implements SensorEventListener {
     private Sensor mAccel;
     private Sensor mProximity;
     private Sensor mLight;
+    private Sensor mStep;
     boolean prox;
 
     private IBinder mBinder = new NthBinder();
@@ -28,6 +29,7 @@ public class NthSense extends Service implements SensorEventListener {
     private int proximityVal = 0;
     private float proxMax;
     private float lux;
+    private float numSteps = 0;
     CalSqlAdapter calSqlAdapter;
 
     private float epsilon = 0.0000001f;
@@ -53,6 +55,8 @@ public class NthSense extends Service implements SensorEventListener {
 
         mAccel = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        mStep = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
         try{proxMax = mProximity.getMaximumRange();}catch(Exception e){prox=true;}                  //Will treat this value as binary close, not-close
         mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);                                //See Android Proximity Sensor Documentation
         isWalking = false;
@@ -82,6 +86,9 @@ public class NthSense extends Service implements SensorEventListener {
         }
         if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
             lux = sensorEvent.values[0];
+        }
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
+            numSteps = sensorEvent.values[0] - numSteps;
         }
 
         float x = accelVals[0];
