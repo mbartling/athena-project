@@ -175,7 +175,7 @@ public class CalSqlAdapter {
 
     static class CalSqlHelper extends SQLiteOpenHelper {
 
-        private static final String DATABASE_NAME = "cal.db";
+        private static final String DATABASE_NAME = "mdp.db";
         private static final String TABLE_NAME = "NthSense";
 
         private static final String ENTRY_TIMESTAMP = "timestamp";
@@ -191,17 +191,17 @@ public class CalSqlAdapter {
         private static final String CREATE_TABLE = "CREATE TABLE "
                 + TABLE_NAME + " (" +
                 ENTRY_TIMESTAMP + " INTEGER PRIMARY KEY," +
-                ENTRY_XVAL + " REAL, " +
-                ENTRY_YVAL + " REAL, " +
-                ENTRY_ZVAL + " REAL, " +
-                ENTRY_PROXVAL + " REAL, " +
-                ENTRY_LUXVAL + " REAL, " +
-                ENTRY_ISWALKING + " INTEGER, " +
-                ENTRY_ISTRAINING + " INTEGER " +
+                ENTRY_XVAL + " REAL" + ", " +
+                ENTRY_YVAL + " REAL" + ", " +
+                ENTRY_ZVAL + " REAL" + ", " +
+                ENTRY_PROXVAL + " REAL" + ", " +
+                ENTRY_LUXVAL + " REAL" + ", " +
+                ENTRY_ISWALKING + " INTEGER" + ", " +
+                ENTRY_ISTRAINING + " INTEGER"+", " +
                 ENTRY_DELTASTEPS + " REAL " +
                 ");";
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        private static final int DATABASE_VERSION = 4;
+        private static final int DATABASE_VERSION = 5;
 
         private Context context;
 
@@ -223,8 +223,9 @@ public class CalSqlAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
             try {
-                //sqLiteDatabase.execSQL(DROP_TABLE);
-                //onCreate(sqLiteDatabase);
+                sqLiteDatabase.execSQL(DROP_TABLE);
+                context.deleteDatabase(TABLE_NAME) ;
+                onCreate(sqLiteDatabase);
                 if (newVersion > oldVersion) {
                     sqLiteDatabase.execSQL("ALTER TABLE NthSense ADD COLUMN deltaSteps REAL DEFAULT 0");
                 }
